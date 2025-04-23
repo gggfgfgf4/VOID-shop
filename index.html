@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="غرفه بوفه Void در بازارچه مدرسه - تجربه ای فراتر از انتظار با افکت‌های ویژه">
+  <title>بوفه ی VOID | ورود به فضای خلا</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --void-purple: #6a00ff;
+      --void-dark: #0a0a1a;
+      --void-accent: #00f7ff;
+      --void-pink: #ff00aa;
+      --text-glow: 0 0 10px var(--void-accent);
+      --box-glow: 0 0 20px rgba(106, 0, 255, 0.7);
+      --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background-color: var(--void-dark);
+      color: white;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Background Effects */
+    .void-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -3;
+      background: 
+        radial-gradient(ellipse at 20% 20%, 
+          rgba(106, 0, 255, 0.3) 0%, 
+          transparent 40%),
+        radial-gradient(ellipse at 80% 80%, 
+          rgba(255, 0, 170, 0.2) 0%, 
+          transparent 40%),
+        radial-gradient(ellipse at center, 
+          rgba(106, 0, 255, 0.2) 0%, 
+          rgba(10, 10, 26, 0.9) 70%,
+          var(--void-dark) 100%);
+    }
+
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: 
+        transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="0.5" fill="white" opacity="0.8"/></svg>') repeat,
+        transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><circle cx="100" cy="100" r="1" fill="white" opacity="0.5"/></svg>') repeat;
+      animation: stars-anim 120s linear infinite;
+    }
+
+    @keyframes stars-anim {
+      from { transform: translateY(0); }
+      to { transform: translateY(-1000px); }
+    }
+
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background-color: var(--void-accent);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particle-anim 8s infinite ease-out;
+      filter: drop-shadow(0 0 2px var(--void-accent));
+    }
+
+    @keyframes particle-anim {
+      0% { transform: translate(0, 0); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+    }
+
+    /* Header Styles */
+    header {
+      background-color: rgba(10, 10, 26, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--void-purple);
+      padding: 1.5rem;
+      color: white;
+      max-width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 900;
+      width: 100%;
+      text-shadow: var(--text-glow);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--box-glow);
+      transition: var(--transition);
+    }
+
+    header:hover {
+      box-shadow: 0 0 30px rgba(106, 0, 255, 0.9);
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        transparent 45%,
+        var(--void-purple) 50%,
+        transparent 55%
+      );
+      opacity: 0.3;
+      animation: shine 6s infinite linear;
+      pointer-events: none;
+    }
+
+    @keyframes shine {
+      0% { transform: rotate(0deg) translate(-30%, -30%); }
+      100% { transform: rotate(360deg) translate(-30%, -30%); }
+    }
+
+    /* Main Content */
+    main {
+      background-color: rgba(10, 10, 26, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2.5rem;
+      border-radius: 10px;
+      border: 1px solid var(--void-purple);
+      color: white;
+      box-shadow: var(--box-glow);
+      position: relative;
+      overflow: hidden;
+      width: 90%;
+      transition: var(--transition);
+    }
+
+    main:hover {
+      box-shadow: 0 0 30px rgba(106, 0, 255, 0.9);
+      transform: translateY(-5px);
+    }
+
+    main::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, 
+                transparent, 
+                var(--void-accent), 
+                var(--void-pink), 
+                var(--void-accent), 
+                transparent);
+      animation: border-anim 4s linear infinite;
+      background-size: 200% auto;
+    }
+
+    @keyframes border-anim {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* Typography */
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      color: white;
+      text-shadow: var(--text-glow);
+      text-align: center;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    h1::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--void-purple), var(--void-accent));
+      margin: 0.5rem auto;
+      border-radius: 3px;
+    }
+
+    h2, h3 {
+      margin: 1.5rem 0 1rem;
+      color: var(--void-accent);
+      text-shadow: 0 0 5px rgba(0, 247, 255, 0.5);
+      position: relative;
+      padding-right: 1rem;
+    }
+
+    h2::before, h3::before {
+      content: '✦';
+      position: absolute;
+      right: -0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--void-pink);
+      font-size: 1.2rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      text-align: justify;
+      line-height: 1.8;
+    }
+
+    /* Lists */
+    ul {
+      list-style: none;
+      margin: 1.5rem 0;
+      padding-right: 1rem;
+    }
+
+    li {
+      margin-bottom: 1rem;
+      position: relative;
+      padding-right: 1.5rem;
+      transition: var(--transition);
+      line-height: 1.8;
+    }
+
+    li:hover {
+      transform: translateX(-10px);
+      text-shadow: 0 0 5px rgba(0, 247, 255, 0.3);
+    }
+
+    li::before {
+      content: '◈';
+      position: absolute;
+      right: 0;
+      color: var(--void-accent);
+      font-size: 0.8rem;
+      top: 0.5rem;
+      transition: var(--transition);
+    }
+
+    li:hover::before {
+      transform: scale(1.5);
+      color: var(--void-pink);
+    }
+
+    /* Buttons */
+    .button-container {
+      text-align: center;
+      margin: 3rem 0 2rem;
+    }
+
+    .void-button {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: linear-gradient(45deg, var(--void-purple), var(--void-pink));
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: var(--transition);
+      font-weight: bold;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 15px rgba(106, 0, 255, 0.5);
+      z-index: 1;
+    }
+
+    .void-button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 25px rgba(106, 0, 255, 0.8);
+    }
+
+    .void-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--void-pink), var(--void-purple));
+      opacity: 0;
+      transition: var(--transition);
+      z-index: -1;
+    }
+
+    .void-button:hover::before {
+      opacity: 1;
+    }
+
+    .void-button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        transparent 45%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 55%
+      );
+      opacity: 0;
+      animation: shine 3s infinite;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .void-button:hover::after {
+      opacity: 1;
+    }
+
+    /* Utility Classes */
+    .highlight {
+      color: var(--void-accent);
+      font-weight: bold;
+      text-shadow: var(--text-glow);
+      transition: var(--transition);
+    }
+
+    .highlight:hover {
+      color: var(--void-pink);
+    }
+
+    .price {
+      display: inline-block;
+      background: rgba(106, 0, 255, 0.3);
+      padding: 0.2rem 0.5rem;
+      border-radius: 5px;
+      border: 1px solid var(--void-purple);
+      margin-right: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .price:hover {
+      background: rgba(255, 0, 170, 0.3);
+      border-color: var(--void-pink);
+      transform: scale(1.05);
+    }
+
+    /* Footer */
+    footer {
+      background-color: rgba(10, 10, 26, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid var(--void-purple);
+      color: white;
+      max-width: 100%;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.9rem;
+      margin: auto auto 0;
+      width: 100%;
+      box-shadow: var(--box-glow);
+      text-shadow: 0 0 5px rgba(0, 247, 255, 0.3);
+      transition: var(--transition);
+    }
+
+    footer:hover {
+      box-shadow: 0 0 25px rgba(106, 0, 255, 0.8);
+    }
+
+    footer::before {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--void-accent), transparent);
+      margin: 0 auto 1rem;
+    }
+
+    /* Animations */
+    @keyframes void-pulse {
+      0% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
+      100% { opacity: 0.8; transform: scale(1); }
+    }
+
+    .void-pulse {
+      animation: void-pulse 3s infinite ease-in-out;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        font-size: 1.8rem;
+        padding: 1rem;
+      }
+      
+      main {
+        padding: 1.5rem;
+        width: 95%;
+        margin: 1rem auto;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      h2, h3 {
+        font-size: 1.4rem;
+      }
+      
+      .void-button {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+      }
+      
+      footer {
+        padding: 1rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        font-size: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      h2, h3 {
+        font-size: 1.2rem;
+      }
+      
+      li {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="void-bg"></div>
+  <div class="stars"></div>
+  <div class="particles" id="particles-container"></div>
+
+  <header class="void-pulse">
+    بوفه ی VOID
+  </header>
+
+  <main>
+    <h1>بازارچه ای در فضای خلا</h1>
+    <section>
+      <h2>منوی فضایی</h2>
+      <ul>
+        <li>اسنک گوشت چرخ کرده <span class="price">40,000 تومان</span></li>
+        <li>پیتزا<span class="price">20,000 تومان</span></li>
+        <li>کوکا کولا<span class="price">20,000 تومان</span></li>
+        <li>ژله<span class="price">20,000 تومان</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>مختصات فضایی</h3>
+      <p><span class="highlight">مکان:</span> ایران، زنجان، مدرسه شهید بهشتی ۱، غرفه 7</p>
+      <p><span class="highlight">زمان:</span> 1403/2/5 ساعت 9 تا 13</p>
+      <p><span class="highlight">تماس:</span> 09011083220</p>
+    </section>
+
+    <section>
+      <h3>بازی</h3>
+      <p>بازی کنید و بر اساس نمره خود تخفیف بگیرید.</p>
+    </section>
+  <footer>
+    تمامی حقوق متعلق به امیرعلی نوری، ارسطو رضایی، محمدامین اسم‌خانی و شرکت نوری‌تِک است.
+    <br>
+    طراحی و توسعه با ❤️ در کهکشان VOID
+  </footer>
+
+  <script>
+    function createParticles() {
+      const container = document.getElementById('particles-container');
+      const particleCount = Math.floor(window.innerWidth / 10);
+      
+      container.innerHTML = '';
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        const tx = (Math.random() - 0.5) * 300;
+        const ty = (Math.random() - 0.5) * 300;
+        
+        const size = Math.random() * 3 + 1;
+        const delay = Math.random() * 10;
+        const duration = Math.random() * 5 + 5;
+        
+        const colors = ['var(--void-accent)', 'var(--void-pink)', 'var(--void-purple)'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        particle.style.left = `${x}%`;
+        particle.style.top = `${y}%`;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.setProperty('--tx', `${tx}px`);
+        particle.style.setProperty('--ty', `${ty}px`);
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.backgroundColor = randomColor;
+        particle.style.opacity = Math.random() * 0.5 + 0.1;
+        
+        container.appendChild(particle);
+      }
+    }
+    
+    function setupInteractivity() {
+      const main = document.querySelector('main');
+      
+      main.addEventListener('mouseenter', () => {
+        main.classList.add('void-pulse');
+      });
+      
+      main.addEventListener('mouseleave', () => {
+        main.classList.remove('void-pulse');
+      });
+      
+      const buttons = document.querySelectorAll('.void-button');
+      buttons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          const ripple = document.createElement('span');
+          ripple.classList.add('ripple-effect');
+          ripple.style.position = 'absolute';
+          ripple.style.borderRadius = '50%';
+          ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+          ripple.style.transform = 'scale(0)';
+          ripple.style.animation = 'ripple 0.6s linear';
+          ripple.style.pointerEvents = 'none';
+          
+          const rect = button.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          const x = e.clientX - rect.left - size/2;
+          const y = e.clientY - rect.top - size/2;
+          
+          ripple.style.width = ripple.style.height = `${size}px`;
+          ripple.style.left = `${x}px`;
+          ripple.style.top = `${y}px`;
+          
+          button.appendChild(ripple);
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+    }
+    
+    function addRippleAnimation() {
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes ripple {
+          to {
+            transform: scale(4);
+            opacity: 0;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    
+    window.addEventListener('load', () => {
+      createParticles();
+      setupInteractivity();
+      addRippleAnimation();
+    });
+    
+    window.addEventListener('resize', () => {
+      createParticles();
+    });
+  </script>
+</body>
+</html>

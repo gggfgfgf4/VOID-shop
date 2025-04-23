@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>بازی تخفیف VOID</title>
+  <style>
+    :root {
+      --void-purple: #6a00ff;
+      --void-dark: #0a0a1a;
+      --void-accent: #00f7ff;
+      --void-pink: #ff00aa;
+      --text-glow: 0 0 10px var(--void-accent);
+      --box-glow: 0 0 20px rgba(106, 0, 255, 0.7);
+      --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background-color: var(--void-dark);
+      color: white;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Background Effects */
+    .void-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -3;
+      background: 
+        radial-gradient(ellipse at 20% 20%, 
+          rgba(106, 0, 255, 0.3) 0%, 
+          transparent 40%),
+        radial-gradient(ellipse at 80% 80%, 
+          rgba(255, 0, 170, 0.2) 0%, 
+          transparent 40%),
+        radial-gradient(ellipse at center, 
+          rgba(106, 0, 255, 0.2) 0%, 
+          rgba(10, 10, 26, 0.9) 70%,
+          var(--void-dark) 100%);
+    }
+
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: 
+        transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="0.5" fill="white" opacity="0.8"/></svg>') repeat,
+        transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><circle cx="100" cy="100" r="1" fill="white" opacity="0.5"/></svg>') repeat;
+      animation: stars-anim 120s linear infinite;
+    }
+
+    @keyframes stars-anim {
+      from { transform: translateY(0); }
+      to { transform: translateY(-1000px); }
+    }
+
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background-color: var(--void-accent);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particle-anim 8s infinite ease-out;
+      filter: drop-shadow(0 0 2px var(--void-accent));
+    }
+
+    @keyframes particle-anim {
+      0% { transform: translate(0, 0); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+    }
+
+    /* Header Styles */
+    header {
+      background-color: rgba(10, 10, 26, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--void-purple);
+      padding: 1.5rem;
+      color: white;
+      max-width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 900;
+      width: 100%;
+      text-shadow: var(--text-glow);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--box-glow);
+      transition: var(--transition);
+    }
+
+    header:hover {
+      box-shadow: 0 0 30px rgba(106, 0, 255, 0.9);
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        transparent 45%,
+        var(--void-purple) 50%,
+        transparent 55%
+      );
+      opacity: 0.3;
+      animation: shine 6s infinite linear;
+      pointer-events: none;
+    }
+
+    @keyframes shine {
+      0% { transform: rotate(0deg) translate(-30%, -30%); }
+      100% { transform: rotate(360deg) translate(-30%, -30%); }
+    }
+
+    /* Main Content */
+    main {
+      background-color: rgba(10, 10, 26, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2.5rem;
+      border-radius: 10px;
+      border: 1px solid var(--void-purple);
+      color: white;
+      box-shadow: var(--box-glow);
+      position: relative;
+      overflow: hidden;
+      width: 90%;
+      transition: var(--transition);
+    }
+
+    main:hover {
+      box-shadow: 0 0 30px rgba(106, 0, 255, 0.9);
+      transform: translateY(-5px);
+    }
+
+    main::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, 
+                transparent, 
+                var(--void-accent), 
+                var(--void-pink), 
+                var(--void-accent), 
+                transparent);
+      animation: border-anim 4s linear infinite;
+      background-size: 200% auto;
+    }
+
+    @keyframes border-anim {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* Game Container */
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+
+    .game-stage {
+      display: none;
+      width: 100%;
+      text-align: center;
+    }
+
+    .game-stage.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography */
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      color: white;
+      text-shadow: var(--text-glow);
+      text-align: center;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    h1::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--void-purple), var(--void-accent));
+      margin: 0.5rem auto;
+      border-radius: 3px;
+    }
+
+    h2, h3 {
+      margin: 1.5rem 0 1rem;
+      color: var(--void-accent);
+      text-shadow: 0 0 5px rgba(0, 247, 255, 0.5);
+      position: relative;
+      padding-right: 1rem;
+    }
+
+    h2::before, h3::before {
+      content: '✦';
+      position: absolute;
+      right: -0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--void-pink);
+      font-size: 1.2rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      text-align: justify;
+      line-height: 1.8;
+    }
+
+    /* Game Elements */
+    .game-board {
+      width: 300px;
+      height: 300px;
+      margin: 2rem auto;
+      position: relative;
+      border: 2px solid var(--void-purple);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(106, 0, 255, 0.5);
+    }
+
+    .target {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background-color: var(--void-pink);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.1s ease;
+      box-shadow: 0 0 10px var(--void-pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      user-select: none;
+    }
+
+    .target:hover {
+      transform: scale(1.1);
+    }
+
+    .score-display {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+      color: var(--void-accent);
+      text-shadow: var(--text-glow);
+    }
+
+    .timer-display {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--void-pink);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background-color: rgba(106, 0, 255, 0.3);
+      border-radius: 5px;
+      margin: 1rem 0;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      background: linear-gradient(90deg, var(--void-purple), var(--void-pink));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Buttons */
+    .button-container {
+      text-align: center;
+      margin: 3rem 0 2rem;
+    }
+
+    .void-button {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: linear-gradient(45deg, var(--void-purple), var(--void-pink));
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: var(--transition);
+      font-weight: bold;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 15px rgba(106, 0, 255, 0.5);
+      z-index: 1;
+    }
+
+    .void-button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 25px rgba(106, 0, 255, 0.8);
+    }
+
+    .void-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--void-pink), var(--void-purple));
+      opacity: 0;
+      transition: var(--transition);
+      z-index: -1;
+    }
+
+    .void-button:hover::before {
+      opacity: 1;
+    }
+
+    .void-button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        transparent 45%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 55%
+      );
+      opacity: 0;
+      animation: shine 3s infinite;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .void-button:hover::after {
+      opacity: 1;
+    }
+
+    /* Result Section */
+    .result-container {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background-color: rgba(106, 0, 255, 0.2);
+      border-radius: 10px;
+      border: 1px solid var(--void-purple);
+    }
+
+    .discount-badge {
+      font-size: 2.5rem;
+      color: var(--void-pink);
+      text-shadow: 0 0 10px var(--void-pink);
+      margin: 1rem 0;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .phone-number {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background-color: rgba(0, 247, 255, 0.2);
+      border-radius: 5px;
+      margin: 1rem 0;
+      font-family: monospace;
+      font-size: 1.2rem;
+      color: var(--void-accent);
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin: 1.5rem 0;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: rgba(10, 10, 26, 0.7);
+      border: 1px solid var(--void-purple);
+      border-radius: 5px;
+      color: white;
+      font-family: 'Vazirmatn', sans-serif;
+      margin-top: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--void-accent);
+      box-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        font-size: 1.8rem;
+        padding: 1rem;
+      }
+      
+      main {
+        padding: 1.5rem;
+        width: 95%;
+        margin: 1rem auto;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      h2, h3 {
+        font-size: 1.4rem;
+      }
+      
+      .void-button {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+      }
+      
+      .game-board {
+        width: 250px;
+        height: 250px;
+      }
+      
+      .target {
+        width: 35px;
+        height: 35px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        font-size: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      h2, h3 {
+        font-size: 1.2rem;
+      }
+      
+      .game-board {
+        width: 200px;
+        height: 200px;
+      }
+      
+      .target {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="void-bg"></div>
+  <div class="stars"></div>
+  <div class="particles" id="particles-container"></div>
+
+  <header class="void-pulse">
+    بازی تخفیف VOID
+  </header>
+
+  <main>
+    <div class="game-container">
+      <!-- مرحله شروع -->
+      <div class="game-stage active" id="start-stage">
+        <h1>چالش فضایی VOID</h1>
+        <p>در این بازی چالش‌برانگیز، شما باید در مدت زمان محدود تا حد ممکن روی اهداف در حال حرکت کلیک کنید. هر چقدر امتیاز بیشتری کسب کنید، تخفیف بیشتری دریافت خواهید کرد!</p>
+        
+        <div class="button-container">
+          <button class="void-button" id="start-game">شروع بازی</button>
+        </div>
+        
+        <h3>قوانین بازی:</h3>
+        <ul>
+          <li>زمان بازی: 30 ثانیه</li>
+          <li>هر هدفی که کلیک کنید 5 امتیاز دارد</li>
+          <li>اهداف به سرعت حرکت می‌کنند و کوچک می‌شوند</li>
+          <li>امتیاز شما بین 0 تا 100 محاسبه می‌شود</li>
+        </ul>
+      </div>
+      
+      <!-- مرحله بازی -->
+      <div class="game-stage" id="game-stage">
+        <h2>زمان باقی‌مانده</h2>
+        <div class="timer-display" id="timer">30</div>
+        
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+        
+        <div class="score-display">امتیاز: <span id="score">0</span></div>
+        
+        <div class="game-board" id="game-board"></div>
+      </div>
+      
+      <!-- مرحله نتیجه -->
+      <div class="game-stage" id="result-stage">
+        <h1>نتیجه بازی</h1>
+        
+        <div class="result-container">
+          <h2>امتیاز نهایی شما:</h2>
+          <div class="score-display"><span id="final-score">0</span> از 100</div>
+          
+          <h3>تخفیف شما:</h3>
+          <div class="discount-badge" id="discount">0%</div>
+          
+          <p>برای دریافت تخفیف، لطفاً اطلاعات زیر را تکمیل کنید:</p>
+          
+          <div class="form-group">
+            <label for="name">نام کامل:</label>
+            <input type="text" id="name" class="form-input" placeholder="نام خود را وارد کنید">
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">شماره تماس:</label>
+            <input type="tel" id="phone" class="form-input" placeholder="09xxxxxxxxx">
+          </div>
+          
+          <div class="button-container">
+            <button class="void-button" id="submit-result">ارسال نتیجه</button>
+          </div>
+        </div>
+        
+        <div id="success-message" style="display: none;">
+          <h3>نتیجه با موفقیت ارسال شد!</h3>
+          <p>برای دریافت تخفیف به این شماره این موارد را ارسال کنید:</p>
+          <div class="phone-number">09930761277</div>
+          <li>مقدار تخفیف</li>
+          <li>عکس برنده شدن</li>
+          <li>نام و نام خانوادگی</li>
+          <li>شماره تماس</li>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br><br>
+
+    <footer>
+        تمامی حقوق متعلق به شرکت نوری‌تِک است.
+        <br>
+        طراحی و توسعه با ❤️ در کهکشان VOID
+      </footer>
+    
+  </main>
+  <script>
+    // ایجاد ذرات پس‌زمینه
+    function createParticles() {
+      const container = document.getElementById('particles-container');
+      const particleCount = Math.floor(window.innerWidth / 10);
+      
+      container.innerHTML = '';
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        const tx = (Math.random() - 0.5) * 300;
+        const ty = (Math.random() - 0.5) * 300;
+        
+        const size = Math.random() * 3 + 1;
+        const delay = Math.random() * 10;
+        const duration = Math.random() * 5 + 5;
+        
+        const colors = ['var(--void-accent)', 'var(--void-pink)', 'var(--void-purple)'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        particle.style.left = `${x}%`;
+        particle.style.top = `${y}%`;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.setProperty('--tx', `${tx}px`);
+        particle.style.setProperty('--ty', `${ty}px`);
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.backgroundColor = randomColor;
+        particle.style.opacity = Math.random() * 0.5 + 0.1;
+        
+        container.appendChild(particle);
+      }
+    }
+    
+    // متغیرهای بازی
+    let score = 0;
+    let timeLeft = 30;
+    let gameInterval;
+    let timerInterval;
+    let targetCount = 0;
+    const maxTargets = 10;
+    const gameDuration = 30; // ثانیه
+    
+    // عناصر DOM
+    const startStage = document.getElementById('start-stage');
+    const gameStage = document.getElementById('game-stage');
+    const resultStage = document.getElementById('result-stage');
+    const startButton = document.getElementById('start-game');
+    const gameBoard = document.getElementById('game-board');
+    const timerDisplay = document.getElementById('timer');
+    const scoreDisplay = document.getElementById('score');
+    const finalScoreDisplay = document.getElementById('final-score');
+    const discountDisplay = document.getElementById('discount');
+    const progressBar = document.getElementById('progress');
+    const submitButton = document.getElementById('submit-result');
+    const successMessage = document.getElementById('success-message');
+    
+    // شروع بازی
+    startButton.addEventListener('click', startGame);
+    
+    function startGame() {
+      // بازنشانی متغیرها
+      score = 0;
+      timeLeft = gameDuration;
+      targetCount = 0;
+      scoreDisplay.textContent = '0';
+      timerDisplay.textContent = timeLeft;
+      gameBoard.innerHTML = '';
+      
+      // تغییر مرحله
+      startStage.classList.remove('active');
+      gameStage.classList.add('active');
+      
+      // شروع تایمر
+      timerInterval = setInterval(updateTimer, 431);
+      
+      // شروع ایجاد اهداف
+      gameInterval = setInterval(createTarget, 800);
+      
+      // پیشرفت بازی
+      updateProgress();
+    }
+    
+    // به روز رسانی تایمر
+    function updateTimer() {
+      timeLeft--;
+      timerDisplay.textContent = timeLeft;
+      
+      if (timeLeft <= 0) {
+        endGame();
+      }
+    }
+    
+    // ایجاد هدف جدید
+    function createTarget() {
+      if (targetCount >= maxTargets) return;
+      
+      const target = document.createElement('div');
+      target.classList.add('target');
+      target.textContent = '✧';
+      
+      // موقعیت تصادفی
+      const maxX = gameBoard.offsetWidth - 40;
+      const maxY = gameBoard.offsetHeight - 40;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+      
+      target.style.left = `${x}px`;
+      target.style.top = `${y}px`;
+      
+      // اندازه تصادفی
+      const size = Math.random() * 0.7 + 0.5;
+      target.style.transform = `scale(${size})`;
+      
+      // حرکت خودکار
+      const speedX = (Math.random() - 0.5) * 4;
+      const speedY = (Math.random() - 0.5) * 4;
+      
+      let currentX = x;
+      let currentY = y;
+      
+      const moveInterval = setInterval(() => {
+        currentX += speedX;
+        currentY += speedY;
+        
+        // برخورد با دیوارها
+        if (currentX <= 0 || currentX >= maxX) {
+          speedX = -speedX;
+        }
+        if (currentY <= 0 || currentY >= maxY) {
+          speedY = -speedY;
+        }
+        
+        target.style.left = `${currentX}px`;
+        target.style.top = `${currentY}px`;
+      }, 50);
+      
+      // کلیک روی هدف
+      target.addEventListener('click', () => {
+        // افزایش امتیاز
+        score += 0.5;
+        scoreDisplay.textContent = score;
+        
+        // انیمیشن کلیک
+        target.style.transform = 'scale(1.5)';
+        target.style.opacity = '0';
+        target.style.backgroundColor = 'var(--void-accent)';
+        
+        // حذف هدف پس از انیمیشن
+        setTimeout(() => {
+          target.remove();
+          targetCount--;
+          clearInterval(moveInterval);
+        }, 200);
+      });
+      
+      // کوچک شدن تدریجی هدف
+      const shrinkInterval = setInterval(() => {
+        const currentSize = parseFloat(target.style.transform.replace('scale(', '').replace(')', ''));
+        if (currentSize > 0.3) {
+          target.style.transform = `scale(${currentSize * 0.95})`;
+        }
+      }, 300);
+      
+      // حذف خودکار هدف پس از 5 ثانیه
+      setTimeout(() => {
+        if (target.parentNode) {
+          target.remove();
+          targetCount--;
+          clearInterval(moveInterval);
+          clearInterval(shrinkInterval);
+        }
+      }, 5000);
+      
+      gameBoard.appendChild(target);
+      targetCount++;
+    }
+    
+    // به روز رسانی نوار پیشرفت
+    function updateProgress() {
+      const progress = ((gameDuration - timeLeft) / gameDuration) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+    
+    // پایان بازی
+    function endGame() {
+      clearInterval(gameInterval);
+      clearInterval(timerInterval);
+      
+      // محاسبه تخفیف (حداکثر 50%)
+      const finalScore = Math.min(score, 100);
+      const discount = Math.floor(finalScore / 2);
+      
+      // نمایش نتیجه
+      finalScoreDisplay.textContent = finalScore;
+      discountDisplay.textContent = `${discount}%`;
+      
+      // تغییر به مرحله نتیجه
+      gameStage.classList.remove('active');
+      resultStage.classList.add('active');
+    }
+    
+    // ارسال نتیجه
+    submitButton.addEventListener('click', () => {
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      
+      if (!name || !phone) {
+        alert('لطفاً نام و شماره تماس را وارد کنید.');
+        return;
+      }
+      
+      // در اینجا می‌توانید اطلاعات را به سرور ارسال کنید
+      // برای نمونه، فقط نمایش پیام موفقیت
+      successMessage.style.display = 'block';
+      
+      // اسکرول به پایین
+      successMessage.scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    // راه‌اندازی اولیه
+    window.addEventListener('load', () => {
+      createParticles();
+    });
+    
+    window.addEventListener('resize', () => {
+      createParticles();
+    });
+  </script>
+</body>
+</html>
