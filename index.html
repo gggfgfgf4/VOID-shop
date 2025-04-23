@@ -468,6 +468,69 @@
         font-size: 0.9rem;
       }
     }
+    .void-button {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: linear-gradient(45deg, var(--void-purple), var(--void-pink));
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: var(--transition);
+      font-weight: bold;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 15px rgba(106, 0, 255, 0.5);
+      z-index: 1;
+    }
+
+    .void-button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 25px rgba(106, 0, 255, 0.8);
+    }
+
+    .void-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--void-pink), var(--void-purple));
+      opacity: 0;
+      transition: var(--transition);
+      z-index: -1;
+    }
+
+    .void-button:hover::before {
+      opacity: 1;
+    }
+
+    .void-button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        transparent 45%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 55%
+      );
+      opacity: 0;
+      animation: shine 3s infinite;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .void-button:hover::after {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -502,6 +565,7 @@
     <section>
       <h3>بازی</h3>
       <p>بازی کنید و بر اساس نمره خود تخفیف بگیرید.</p>
+        <button><a href="game.html">ورود</a></button>
     </section>
   <footer>
     تمامی حقوق متعلق به امیرعلی نوری، ارسطو رضایی، محمدامین اسم‌خانی و شرکت نوری‌تِک است.
